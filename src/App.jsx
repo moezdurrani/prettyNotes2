@@ -224,6 +224,7 @@ const App = () => {
 
   return (
     <div className="App">
+      <Toolbar editor={editor} currentStyles={currentStyles} />
       <div className="container">
         <Slate
           editor={editor}
@@ -232,7 +233,6 @@ const App = () => {
           onChange={handleEditorChange}
         >
           <div className="editor-layout">
-            <Toolbar editor={editor} currentStyles={currentStyles} />
             <Editable
               className="editor"
               renderLeaf={renderLeaf}
