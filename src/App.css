@@ -38,15 +38,17 @@
 }
 
 .toolbar {
-  width: 220px;
-  height: 100vh;
+  width: 150px;
   padding: 20px;
-  background-color: #f5f5f5;
-  border-right: 1px solid #ccc;
+  margin-top: 20px; /* ✅ Adds space from top */
+  margin-left: 20px; /* ✅ Adds space from left */
+  background-color: #f0f0f0;
+  border: 1px solid #d0d0d0;
+  border-radius: 8px; /* Optional: for rounded corners */
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   gap: 20px;
-  box-shadow: 2px 0 6px rgba(0, 0, 0, 0.05);
 }
 
 .toolbar-section {
