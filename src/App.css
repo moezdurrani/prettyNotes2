@@ -26,9 +26,10 @@
 
 /* A4 paper */
 .editor {
-  aspect-ratio: 210 / 297; /* A4 aspect ratio */
+  /* aspect-ratio: 210 / 297; */
+  width: 794px;
   height: 90vh; /* fits the viewport vertically */
-  width: auto; /* width adjusts to preserve A4 ratio */
+  /* width: auto;  */
   background-color: white;
   border: 1px solid #ccc;
   padding: 40px;
