@@ -35,7 +35,7 @@ const CustomEditor = {
 // Toolbar component
 const Toolbar = ({ editor, currentStyles }) => {
   const colors = ["#000000", "#FF0000", "#00FF00", "#0000FF"];
-  const fonts = ["Arial", "Times New Roman", "Courier New"];
+  const fonts = ["Arial", "Times New Roman", "Courier New", "Patrick Hand"];
   const sizes = [12, 16, 20, 24];
   const alignments = ["left", "center", "right"];
 
@@ -71,7 +71,10 @@ const Toolbar = ({ editor, currentStyles }) => {
           {fonts.map((font) => (
             <button
               key={font}
-              style={{ fontFamily: font }}
+              style={{
+                fontFamily:
+                  font === "Patrick Hand" ? "'Patrick Hand', cursive" : font,
+              }}
               className={currentStyles.font === font ? "active" : ""}
               onMouseDown={(e) => {
                 e.preventDefault();
@@ -174,7 +177,10 @@ const Toolbar = ({ editor, currentStyles }) => {
 const Leaf = ({ attributes, children, leaf }) => {
   const style = {
     color: leaf.color || "#000000",
-    fontFamily: leaf.font || "Arial",
+    fontFamily:
+      leaf.font === "Patrick Hand"
+        ? "'Patrick Hand', cursive"
+        : leaf.font || "Arial",
     fontSize: `${leaf.size || 16}px`,
     fontWeight: leaf.bold ? "bold" : "normal",
     fontStyle: leaf.italic ? "italic" : "normal",

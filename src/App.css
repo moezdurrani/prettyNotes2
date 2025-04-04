@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap");
+
 .App {
   height: 100vh;
   padding: 20px; /* ⬅ Add this for overall breathing space */
@@ -102,9 +104,47 @@
   padding: 5px 10px;
   border: 1px solid #ccc;
   background-color: white;
+  border-radius: 1px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.color-swatches {
+  display: flex;
+  gap: 5px;
+}
+
+.color-swatches .swatch {
+  width: 20px;
+  height: 20px;
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.color-swatches .swatch.active {
+  border: 2px solid #333;
+}
+
+.toolbar button.active {
+  background-color: #d0d0d0;
+  font-weight: bold;
+}
+
+.option-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.option-buttons button {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  background-color: white;
   border-radius: 4px;
   cursor: pointer;
   font-size: 14px;
+  font-family: inherit;
 }
 
 .color-swatches {
