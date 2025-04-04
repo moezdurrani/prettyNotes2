@@ -42,12 +42,8 @@ const Toolbar = ({ editor, currentStyles }) => {
   const applyMark = (key, value) => {
     if (editor.selection) {
       Editor.addMark(editor, key, value);
-      console.log(`Applied mark to selection: ${key} = ${value}`);
     } else {
       Editor.addMark(editor, key, value);
-      console.log(
-        `No selection. Mark ${key} = ${value} will apply to next text typed.`
-      );
     }
     ReactEditor.focus(editor);
   };
@@ -64,81 +60,95 @@ const Toolbar = ({ editor, currentStyles }) => {
         { align },
         { match: (n) => n.type === "paragraph", mode: "lowest" }
       );
-      console.log(`Applied alignment: ${align}`);
-    } else {
-      console.warn("No paragraph node found to apply alignment.");
     }
     ReactEditor.focus(editor);
   };
 
   return (
     <div className="toolbar">
-      <button
-        onMouseDown={(e) => {
-          e.preventDefault();
-          CustomEditor.toggleBoldMark(editor);
-        }}
-        className={currentStyles.bold ? "active" : ""}
-      >
-        B
-      </button>
-      <button
-        onMouseDown={(e) => {
-          e.preventDefault();
-          CustomEditor.toggleItalicMark(editor);
-        }}
-        className={currentStyles.italic ? "active" : ""}
-      >
-        I
-      </button>
+      <div className="toolbar-section">
+        <label>Font:</label>
+        <select
+          value={currentStyles.font || "Arial"}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e) => applyMark("font", e.target.value)}
+        >
+          {fonts.map((font) => (
+            <option key={font} value={font}>
+              {font}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <select
-        value={currentStyles.color || "#000000"}
-        onClick={(e) => e.stopPropagation()}
-        onChange={(e) => applyMark("color", e.target.value)}
-      >
-        {colors.map((color) => (
-          <option key={color} value={color}>
-            {color}
-          </option>
-        ))}
-      </select>
+      <div className="toolbar-section">
+        <label>Size:</label>
+        <select
+          value={currentStyles.size || 16}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e) => applyMark("size", parseInt(e.target.value))}
+        >
+          {sizes.map((size) => (
+            <option key={size} value={size}>
+              {size}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <select
-        value={currentStyles.font || "Arial"}
-        onClick={(e) => e.stopPropagation()}
-        onChange={(e) => applyMark("font", e.target.value)}
-      >
-        {fonts.map((font) => (
-          <option key={font} value={font}>
-            {font}
-          </option>
-        ))}
-      </select>
+      <div className="toolbar-section">
+        <label>Color:</label>
+        <select
+          value={currentStyles.color || "#000000"}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e) => applyMark("color", e.target.value)}
+        >
+          {colors.map((color) => (
+            <option key={color} value={color}>
+              {color}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <select
-        value={currentStyles.size || 16}
-        onClick={(e) => e.stopPropagation()}
-        onChange={(e) => applyMark("size", parseInt(e.target.value))}
-      >
-        {sizes.map((size) => (
-          <option key={size} value={size}>
-            {size}
-          </option>
-        ))}
-      </select>
+      <div className="toolbar-section">
+        <label>Alignment:</label>
+        <select
+          value={currentStyles.align || "left"}
+          onClick={(e) => e.stopPropagation()}
+          onChange={(e) => applyAlignment(e.target.value)}
+        >
+          {alignments.map((align) => (
+            <option key={align} value={align}>
+              {align}
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <select
-        value={currentStyles.align || "left"}
-        onClick={(e) => e.stopPropagation()}
-        onChange={(e) => applyAlignment(e.target.value)}
-      >
-        {alignments.map((align) => (
-          <option key={align} value={align}>
-            {align}
-          </option>
-        ))}
-      </select>
+      <div className="toolbar-section">
+        <label>Style:</label>
+        <div className="style-buttons">
+          <button
+            onMouseDown={(e) => {
+              e.preventDefault();
+              CustomEditor.toggleBoldMark(editor);
+            }}
+            className={currentStyles.bold ? "active" : ""}
+          >
+            B
+          </button>
+          <button
+            onMouseDown={(e) => {
+              e.preventDefault();
+              CustomEditor.toggleItalicMark(editor);
+            }}
+            className={currentStyles.italic ? "active" : ""}
+          >
+            I
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
@@ -152,7 +162,6 @@ const Leaf = ({ attributes, children, leaf }) => {
     fontWeight: leaf.bold ? "bold" : "normal",
     fontStyle: leaf.italic ? "italic" : "normal",
   };
-
   return (
     <span {...attributes} style={style}>
       {children}
@@ -222,26 +231,26 @@ const App = () => {
           value={value}
           onChange={handleEditorChange}
         >
-          <Toolbar editor={editor} currentStyles={currentStyles} />
-          <Editable
-            className="editor"
-            renderLeaf={renderLeaf}
-            renderElement={renderElement}
-            placeholder="Start typing your notes here..."
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                Transforms.insertNodes(editor, {
-                  type: "paragraph",
-                  align: "left",
-                  children: [{ text: "" }],
-                });
-              }
-            }}
-            onSelect={() => {
-              setCurrentStyles(getCurrentStyles());
-            }}
-          />
+          <div className="editor-layout">
+            <Toolbar editor={editor} currentStyles={currentStyles} />
+            <Editable
+              className="editor"
+              renderLeaf={renderLeaf}
+              renderElement={renderElement}
+              placeholder="Start typing your notes here..."
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  Transforms.insertNodes(editor, {
+                    type: "paragraph",
+                    align: "left",
+                    children: [{ text: "" }],
+                  });
+                }
+              }}
+              onSelect={() => setCurrentStyles(getCurrentStyles())}
+            />
+          </div>
         </Slate>
       </div>
     </div>
