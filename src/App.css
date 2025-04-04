@@ -1,0 +1,51 @@
+.App {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 80vh;
+  width: 80vw;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.toolbar {
+  width: 200px;
+  padding: 20px;
+  background-color: #f8f8f8;
+  border-right: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.toolbar button {
+  padding: 8px;
+  margin: 2px 0;
+  border: 1px solid #ddd;
+  background-color: white;
+  cursor: pointer;
+}
+
+.toolbar button.active {
+  background-color: #ddd;
+}
+
+.toolbar select {
+  padding: 8px;
+  margin: 2px 0;
+  border: 1px solid #ddd;
+  width: 100%;
+}
+
+.editor {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
