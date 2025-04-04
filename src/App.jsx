@@ -42,8 +42,6 @@ const Toolbar = ({ editor, currentStyles }) => {
   const applyMark = (key, value) => {
     if (editor.selection) {
       Editor.addMark(editor, key, value);
-    } else {
-      Editor.addMark(editor, key, value);
     }
     ReactEditor.focus(editor);
   };
@@ -66,66 +64,85 @@ const Toolbar = ({ editor, currentStyles }) => {
 
   return (
     <div className="toolbar">
+      {/* Font Family */}
       <div className="toolbar-section">
         <label>Font:</label>
-        <select
-          value={currentStyles.font || "Arial"}
-          onClick={(e) => e.stopPropagation()}
-          onChange={(e) => applyMark("font", e.target.value)}
-        >
+        <div className="option-buttons">
           {fonts.map((font) => (
-            <option key={font} value={font}>
+            <button
+              key={font}
+              style={{ fontFamily: font }}
+              className={currentStyles.font === font ? "active" : ""}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                applyMark("font", font);
+              }}
+            >
               {font}
-            </option>
+            </button>
           ))}
-        </select>
+        </div>
       </div>
 
+      {/* Font Size */}
       <div className="toolbar-section">
         <label>Size:</label>
-        <select
-          value={currentStyles.size || 16}
-          onClick={(e) => e.stopPropagation()}
-          onChange={(e) => applyMark("size", parseInt(e.target.value))}
-        >
+        <div className="option-buttons">
           {sizes.map((size) => (
-            <option key={size} value={size}>
+            <button
+              key={size}
+              className={currentStyles.size === size ? "active" : ""}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                applyMark("size", size);
+              }}
+            >
               {size}
-            </option>
+            </button>
           ))}
-        </select>
+        </div>
       </div>
 
+      {/* Font Color */}
       <div className="toolbar-section">
         <label>Color:</label>
-        <select
-          value={currentStyles.color || "#000000"}
-          onClick={(e) => e.stopPropagation()}
-          onChange={(e) => applyMark("color", e.target.value)}
-        >
+        <div className="color-swatches">
           {colors.map((color) => (
-            <option key={color} value={color}>
-              {color}
-            </option>
+            <button
+              key={color}
+              style={{ backgroundColor: color }}
+              className={`swatch ${
+                currentStyles.color === color ? "active" : ""
+              }`}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                applyMark("color", color);
+              }}
+            />
           ))}
-        </select>
+        </div>
       </div>
 
+      {/* Alignment */}
       <div className="toolbar-section">
         <label>Alignment:</label>
-        <select
-          value={currentStyles.align || "left"}
-          onClick={(e) => e.stopPropagation()}
-          onChange={(e) => applyAlignment(e.target.value)}
-        >
+        <div className="option-buttons">
           {alignments.map((align) => (
-            <option key={align} value={align}>
-              {align}
-            </option>
+            <button
+              key={align}
+              className={currentStyles.align === align ? "active" : ""}
+              onMouseDown={(e) => {
+                e.preventDefault();
+                applyAlignment(align);
+              }}
+            >
+              {align.charAt(0).toUpperCase()}
+            </button>
           ))}
-        </select>
+        </div>
       </div>
 
+      {/* Bold / Italic */}
       <div className="toolbar-section">
         <label>Style:</label>
         <div className="style-buttons">
