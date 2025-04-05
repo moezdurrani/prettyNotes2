@@ -36,7 +36,7 @@ const CustomEditor = {
 
 // Toolbar component
 const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
-  const baseColors = ["#000000", "#c9170e", "#529c4f", "#0000ff", "#e29134"]; // Removed the last color (#800080)
+  const baseColors = ["#000000", "#c9170e", "#529c4f", "#0000ff", "#6143d1"]; // Removed the last color (#800080)
   const fonts = [
     "Arial",
     "Times New Roman",
@@ -45,7 +45,7 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
     "Indie Flower",
   ];
   const sizeOptions = [
-    { label: "S", value: 16 },
+    { label: "S", value: 18 },
     { label: "M", value: 20 },
     { label: "L", value: 24 },
     { label: "XL", value: 28 },
@@ -53,7 +53,7 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
   const alignments = ["left", "center", "right"];
 
   // State to track the custom color selected by the color picker
-  const [customColor, setCustomColor] = useState("#800080"); // Default to the previous purple color
+  const [customColor, setCustomColor] = useState("#fa9405"); // Default to the previous purple color
 
   const applyMark = (key, value) => {
     if (editor.selection) {
@@ -300,7 +300,7 @@ const App = () => {
     {
       type: "paragraph",
       align: "left",
-      children: [{ text: "" }],
+      children: [{ text: "", color: "#6143d1" }],
     },
   ];
 
