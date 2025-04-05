@@ -1,12 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Patrick+Hand&family=Quicksand:wght@300..700&display=swap");
 
+/* App layout */
 .App {
   height: 100vh;
-  padding: 20px; /* ⬅ Add this for overall breathing space */
+  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  background-color: #e0e0e0;
+  background-color: rgb(242, 244, 247);
   font-family: Arial, sans-serif;
 }
 
@@ -17,8 +19,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #dedede; /* slightly darker to mimic "outer page" */
+  background-color: rgb(242, 244, 247);
 }
+
 .editor-layout {
   display: flex;
   justify-content: center;
@@ -26,12 +29,10 @@
   padding: 40px 0;
 }
 
-/* A4 paper */
+/* A4-styled editor */
 .editor {
-  /* aspect-ratio: 210 / 297; */
   width: 794px;
-  height: 90vh; /* fits the viewport vertically */
-  /* width: auto;  */
+  height: 90vh;
   background-color: white;
   border: 1px solid #ccc;
   padding: 40px;
@@ -41,15 +42,15 @@
   box-sizing: border-box;
 }
 
+/* Toolbar styling */
 .toolbar {
-  width: 150px;
-  padding: 20px;
-  margin-top: 20px; /* ✅ Adds space from top */
-  margin-left: 20px; /* ✅ Adds space from left */
-  background-color: #f0f0f0;
-  border: 1px solid #d0d0d0;
-  border-radius: 8px; /* Optional: for rounded corners */
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+  width: 170px;
+  padding: 15px;
+  margin-top: 20px;
+  background-color: #ffffff;
+  border: 1px solid rgb(234, 234, 234);
+  border-radius: 8px;
+  box-shadow: 2px 0 15px rgba(0, 0, 0, 0.15);
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -63,74 +64,36 @@
 
 .toolbar-section label {
   font-size: 14px;
-  font-weight: bold;
   color: #333;
 }
 
-.toolbar-section select {
-  width: 100%;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: white;
-  font-size: 14px;
+.toolbar,
+.toolbar * {
+  font-family: "Quicksand", sans-serif;
 }
 
+/* General button styles inside toolbar */
+.toolbar button {
+  padding: 5px 10px;
+  /* border: 1px solid #ccc; */
+  background-color: rgb(242, 244, 247);
+  cursor: pointer;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.toolbar button.active {
+  background-color: rgb(224, 223, 252);
+}
+
+/* Style buttons (Bold / Italic) */
 .style-buttons {
   display: flex;
   gap: 5px;
 }
 
-.toolbar button {
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  background-color: white;
-  cursor: pointer;
-  border-radius: 4px;
-  font-size: 14px;
-}
-
-.toolbar button.active {
-  background-color: #d0d0d0;
-}
-
-.option-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.option-buttons button {
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  background-color: white;
-  border-radius: 1px;
-  cursor: pointer;
-  font-size: 14px;
-}
-
-.color-swatches {
-  display: flex;
-  gap: 5px;
-}
-
-.color-swatches .swatch {
-  width: 20px;
-  height: 20px;
-  border: 2px solid transparent;
-  border-radius: 50%;
-  cursor: pointer;
-}
-
-.color-swatches .swatch.active {
-  border: 2px solid #333;
-}
-
-.toolbar button.active {
-  background-color: #d0d0d0;
-  font-weight: bold;
-}
-
+/* Option buttons (Font Family, Alignment) */
 .option-buttons {
   display: flex;
   flex-wrap: wrap;
@@ -144,21 +107,57 @@
   background-color: #f4f4f4;
   cursor: pointer;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 250;
   color: #333;
-  transition: background-color 0.2s ease, color 0.2s ease;
   min-width: 40px;
+  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
 .option-buttons button.active {
-  background-color: #d1d1d1;
+  background-color: #ae2525;
   color: #1e1e9c;
-  font-weight: bold;
 }
 
+/* Font container similar to size-container */
+.font-container {
+  display: flex;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  justify-content: left;
+  flex-wrap: wrap;
+}
+
+/* Style each font button like size-button */
+.font-button {
+  padding: 5px 10px;
+  min-width: 36px;
+  border: 1px solid rgb(238, 240, 242);
+  border-radius: 4px;
+  background-color: rgb(143, 19, 108);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 250;
+  color: #333;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.font-button:hover {
+  background-color: rgb(224, 223, 252);
+  color: black;
+}
+
+.font-button.active {
+  background-color: rgb(224, 223, 252);
+  color: rgb(97, 67, 209);
+}
+
+/* Font color swatches */
 .color-swatches {
   display: flex;
   gap: 5px;
+  padding: 6px 8px;
+  border-radius: 6px;
 }
 
 .color-swatches .swatch {
@@ -176,11 +175,75 @@
 }
 
 .color-swatches .swatch.active {
-  outline: 1px solid #333;
+  outline: 1px solid rgb(97, 67, 209);
   outline-offset: 2px;
 }
 
-.toolbar button.active {
-  background-color: #d0d0d0;
+/* Size selection styles */
+.size-container {
+  display: flex;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  justify-content: center;
+  flex-wrap: nowrap;
+}
+
+.size-button {
+  padding: 5px 10px;
+  min-width: 36px;
+  border: 1px solid rgb(238, 240, 242);
+  border-radius: 4px;
+  background-color: rgb(143, 19, 108);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 250;
+  color: #333;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.size-button:hover {
+  background-color: rgb(224, 223, 252);
+  color: black;
+}
+
+.size-button.active {
+  background-color: rgb(224, 223, 252);
+  color: rgb(97, 67, 209);
+  font-weight: bold;
+}
+
+/* Container for alignment buttons (same as size/font) */
+.align-container {
+  display: flex;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  justify-content: left;
+  flex-wrap: nowrap;
+}
+
+/* Style each alignment button like size/font buttons */
+.align-button {
+  padding: 5px 10px;
+  min-width: 36px;
+  border: 1px solid rgb(238, 240, 242);
+  border-radius: 4px;
+  background-color: rgb(143, 19, 108);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 250;
+  color: #333;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.align-button:hover {
+  background-color: rgb(224, 223, 252);
+  color: black;
+}
+
+.align-button.active {
+  background-color: rgb(224, 223, 252);
+  color: rgb(97, 67, 209);
   font-weight: bold;
 }

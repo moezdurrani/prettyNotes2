@@ -73,7 +73,7 @@ const Toolbar = ({ editor, currentStyles }) => {
       {/* Font Family */}
       <div className="toolbar-section">
         <label>Font:</label>
-        <div className="option-buttons">
+        <div className="font-container">
           {fonts.map((font) => (
             <button
               key={font}
@@ -81,7 +81,9 @@ const Toolbar = ({ editor, currentStyles }) => {
                 fontFamily:
                   font === "Patrick Hand" ? "'Patrick Hand', cursive" : font,
               }}
-              className={currentStyles.font === font ? "active" : ""}
+              className={`font-button ${
+                currentStyles.font === font ? "active" : ""
+              }`}
               onMouseDown={(e) => {
                 e.preventDefault();
                 applyMark("font", font);
@@ -96,11 +98,13 @@ const Toolbar = ({ editor, currentStyles }) => {
       {/* Font Size */}
       <div className="toolbar-section">
         <label>Size:</label>
-        <div className="option-buttons">
+        <div className="size-container">
           {sizeOptions.map(({ label, value }) => (
             <button
               key={label}
-              className={currentStyles.size === value ? "active" : ""}
+              className={`size-button ${
+                currentStyles.size === value ? "active" : ""
+              }`}
               onMouseDown={(e) => {
                 e.preventDefault();
                 applyMark("size", value);
@@ -135,11 +139,13 @@ const Toolbar = ({ editor, currentStyles }) => {
       {/* Alignment */}
       <div className="toolbar-section">
         <label>Alignment:</label>
-        <div className="option-buttons">
+        <div className="align-container">
           {alignments.map((align) => (
             <button
               key={align}
-              className={currentStyles.align === align ? "active" : ""}
+              className={`align-button ${
+                currentStyles.align === align ? "active" : ""
+              }`}
               onMouseDown={(e) => {
                 e.preventDefault();
                 applyAlignment(align);
