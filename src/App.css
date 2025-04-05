@@ -54,16 +54,18 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
+  align-items: flex-start;
 }
 
 .toolbar-section {
   display: flex;
   flex-direction: column;
   gap: 5px;
+  align-items: flex-start;
 }
 
 .toolbar-section label {
-  font-size: 14px;
+  font-size: 12px;
   color: #333;
 }
 
@@ -243,6 +245,41 @@
 }
 
 .align-button.active {
+  background-color: rgb(224, 223, 252);
+  color: rgb(97, 67, 209);
+  font-weight: bold;
+}
+
+/* Style container like size/font/alignment */
+.style-container {
+  display: flex;
+  gap: 6px;
+  padding: 6px 8px;
+  border-radius: 6px;
+  justify-content: left;
+  flex-wrap: nowrap;
+}
+
+/* Style button appearance */
+.style-button {
+  padding: 5px 10px;
+  min-width: 36px;
+  border: 1px solid rgb(238, 240, 242);
+  border-radius: 4px;
+  background-color: rgb(143, 19, 108);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 250;
+  color: #333;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.style-button:hover {
+  background-color: rgb(224, 223, 252);
+  color: black;
+}
+
+.style-button.active {
   background-color: rgb(224, 223, 252);
   color: rgb(97, 67, 209);
   font-weight: bold;

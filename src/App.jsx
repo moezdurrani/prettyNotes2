@@ -1,6 +1,6 @@
 import "./App.css";
 import { useState, useMemo, useCallback } from "react";
-import { createEditor, Editor, Transforms, Text } from "slate";
+import { createEditor, Editor, Transforms } from "slate";
 import { Slate, Editable, withReact, ReactEditor } from "slate-react";
 import { withHistory } from "slate-history";
 
@@ -33,7 +33,7 @@ const CustomEditor = {
 };
 
 // Toolbar component
-const Toolbar = ({ editor, currentStyles }) => {
+const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
   const colors = ["#000000", "#FF0000", "#00FF00", "#0000FF", "#800080"];
   const fonts = ["Arial", "Times New Roman", "Courier New", "Patrick Hand"];
   const sizeOptions = [
@@ -42,7 +42,6 @@ const Toolbar = ({ editor, currentStyles }) => {
     { label: "L", value: 24 },
     { label: "XL", value: 28 },
   ];
-
   const alignments = ["left", "center", "right"];
 
   const applyMark = (key, value) => {
@@ -66,6 +65,18 @@ const Toolbar = ({ editor, currentStyles }) => {
       );
     }
     ReactEditor.focus(editor);
+  };
+
+  const toggleLightMode = () => {
+    const app = document.querySelector(".App");
+    const container = document.querySelector(".container");
+
+    const newMode = !isLightMode;
+    setIsLightMode(newMode);
+
+    const color = newMode ? "white" : "rgb(242, 244, 247)";
+    app.style.backgroundColor = color;
+    container.style.backgroundColor = color;
   };
 
   return (
@@ -157,27 +168,36 @@ const Toolbar = ({ editor, currentStyles }) => {
         </div>
       </div>
 
-      {/* Bold / Italic */}
+      {/* Style (Bold / Italic / Light Mode) */}
       <div className="toolbar-section">
         <label>Style:</label>
-        <div className="style-buttons">
+        <div className="style-container">
           <button
+            className={`style-button ${currentStyles.bold ? "active" : ""}`}
             onMouseDown={(e) => {
               e.preventDefault();
               CustomEditor.toggleBoldMark(editor);
             }}
-            className={currentStyles.bold ? "active" : ""}
           >
             B
           </button>
           <button
+            className={`style-button ${currentStyles.italic ? "active" : ""}`}
             onMouseDown={(e) => {
               e.preventDefault();
               CustomEditor.toggleItalicMark(editor);
             }}
-            className={currentStyles.italic ? "active" : ""}
           >
             I
+          </button>
+          <button
+            className={`style-button ${isLightMode ? "active" : ""}`}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              toggleLightMode();
+            }}
+          >
+            🌞
           </button>
         </div>
       </div>
@@ -225,6 +245,7 @@ const App = () => {
   ];
 
   const [value, setValue] = useState(() => initialValue);
+  const [isLightMode, setIsLightMode] = useState(false);
 
   const renderLeaf = useCallback((props) => <Leaf {...props} />, []);
   const renderElement = useCallback((props) => <Element {...props} />, []);
@@ -259,7 +280,12 @@ const App = () => {
 
   return (
     <div className="App">
-      <Toolbar editor={editor} currentStyles={currentStyles} />
+      <Toolbar
+        editor={editor}
+        currentStyles={currentStyles}
+        isLightMode={isLightMode}
+        setIsLightMode={setIsLightMode}
+      />
       <div className="container">
         <Slate
           editor={editor}
