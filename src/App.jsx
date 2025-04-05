@@ -1,11 +1,12 @@
 import "./App.css";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useRef } from "react";
 import { createEditor, Editor, Transforms } from "slate";
 import { Slate, Editable, withReact, ReactEditor } from "slate-react";
 import { withHistory } from "slate-history";
 import { Infinity } from "lucide-react";
 import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
 
+// Custom editor utilities
 const CustomEditor = {
   isBoldMarkActive(editor) {
     const marks = Editor.marks(editor);
@@ -33,8 +34,9 @@ const CustomEditor = {
   },
 };
 
+// Toolbar component
 const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
-  const colors = ["#000000", "#FF0000", "#00FF00", "#0000FF", "#800080"];
+  const baseColors = ["#000000", "#FF0000", "#00FF00", "#0000FF"]; // Removed the last color (#800080)
   const fonts = [
     "Arial",
     "Times New Roman",
@@ -49,6 +51,9 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
     { label: "XL", value: 28 },
   ];
   const alignments = ["left", "center", "right"];
+
+  // State to track the custom color selected by the color picker
+  const [customColor, setCustomColor] = useState("#800080"); // Default to the previous purple color
 
   const applyMark = (key, value) => {
     if (editor.selection) {
@@ -76,7 +81,7 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
   const toggleLightMode = () => {
     const app = document.querySelector(".App");
     const container = document.querySelector(".container");
-    const editor = document.querySelector(".editor");
+    const editorEl = document.querySelector(".editor");
 
     const newMode = !isLightMode;
     setIsLightMode(newMode);
@@ -85,19 +90,26 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
     app.style.backgroundColor = bgColor;
     container.style.backgroundColor = bgColor;
 
-    if (editor) {
+    if (editorEl) {
       if (newMode) {
-        editor.style.border = "none";
-        editor.style.boxShadow = "none";
+        editorEl.style.border = "none";
+        editorEl.style.boxShadow = "none";
       } else {
-        editor.style.border = "1px solid #ccc";
-        editor.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.1)";
+        editorEl.style.border = "1px solid #ccc";
+        editorEl.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.1)";
       }
     }
   };
 
+  const handleColorPickerChange = (e) => {
+    const selectedColor = e.target.value;
+    setCustomColor(selectedColor); // Update the custom color state
+    applyMark("color", selectedColor); // Apply the selected color to the editor
+  };
+
   return (
     <div className="toolbar">
+      {/* Font Family */}
       <div className="toolbar-section">
         <label>Font:</label>
         <div className="font-container">
@@ -126,6 +138,7 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
         </div>
       </div>
 
+      {/* Font Size */}
       <div className="toolbar-section">
         <label>Size:</label>
         <div className="size-container">
@@ -146,10 +159,11 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
         </div>
       </div>
 
+      {/* Font Color */}
       <div className="toolbar-section">
         <label>Color:</label>
         <div className="color-swatches">
-          {colors.map((color) => (
+          {baseColors.map((color) => (
             <button
               key={color}
               style={{ backgroundColor: color }}
@@ -162,9 +176,27 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
               }}
             />
           ))}
+          {/* Custom Color Button with Color Picker */}
+          <div className="color-picker-wrapper">
+            <button
+              style={{ backgroundColor: customColor }}
+              className={`swatch ${
+                currentStyles.color === customColor ? "active" : ""
+              }`}
+              onMouseDown={(e) => e.preventDefault()} // Prevent Slate from losing focus
+            />
+            <input
+              type="color"
+              value={customColor}
+              onChange={handleColorPickerChange}
+              className="color-picker-overlay"
+              onMouseDown={(e) => e.preventDefault()} // Prevent Slate from losing focus
+            />
+          </div>
         </div>
       </div>
 
+      {/* Alignment */}
       <div className="toolbar-section">
         <label>Alignment:</label>
         <div className="align-container">
@@ -194,6 +226,7 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
         </div>
       </div>
 
+      {/* Style Buttons */}
       <div className="toolbar-section">
         <label>Style:</label>
         <div className="style-container">
@@ -230,6 +263,7 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
   );
 };
 
+// Leaf Component
 const Leaf = ({ attributes, children, leaf }) => {
   const style = {
     color: leaf.color || "#000000",
@@ -250,6 +284,7 @@ const Leaf = ({ attributes, children, leaf }) => {
   );
 };
 
+// Element Component
 const Element = ({ attributes, children, element }) => {
   return (
     <p {...attributes} style={{ textAlign: element.align || "left" }}>
@@ -295,12 +330,10 @@ const App = () => {
   const [currentStyles, setCurrentStyles] = useState(() => getCurrentStyles());
 
   const handleEditorChange = (newValue) => {
-    if (newValue && Array.isArray(newValue) && newValue.length > 0) {
+    if (newValue && Array.isArray(newValue)) {
       setValue(newValue);
-    } else {
-      setValue(initialValue);
+      setCurrentStyles(getCurrentStyles());
     }
-    setCurrentStyles(getCurrentStyles());
   };
 
   return (
@@ -329,8 +362,15 @@ const App = () => {
                   event.preventDefault();
                   Transforms.insertNodes(editor, {
                     type: "paragraph",
-                    align: "left",
-                    children: [{ text: "", font: "Indie Flower", size: 20 }],
+                    align: currentStyles.align || "left",
+                    children: [
+                      {
+                        text: "",
+                        font: currentStyles.font || "Indie Flower",
+                        size: currentStyles.size || 20,
+                        color: currentStyles.color || "#000000",
+                      },
+                    ],
                   });
                 }
               }}
