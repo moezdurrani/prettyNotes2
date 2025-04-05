@@ -34,9 +34,15 @@ const CustomEditor = {
 
 // Toolbar component
 const Toolbar = ({ editor, currentStyles }) => {
-  const colors = ["#000000", "#FF0000", "#00FF00", "#0000FF"];
+  const colors = ["#000000", "#FF0000", "#00FF00", "#0000FF", "#800080"];
   const fonts = ["Arial", "Times New Roman", "Courier New", "Patrick Hand"];
-  const sizes = [12, 16, 20, 24];
+  const sizeOptions = [
+    { label: "S", value: 16 },
+    { label: "M", value: 20 },
+    { label: "L", value: 24 },
+    { label: "XL", value: 28 },
+  ];
+
   const alignments = ["left", "center", "right"];
 
   const applyMark = (key, value) => {
@@ -91,16 +97,16 @@ const Toolbar = ({ editor, currentStyles }) => {
       <div className="toolbar-section">
         <label>Size:</label>
         <div className="option-buttons">
-          {sizes.map((size) => (
+          {sizeOptions.map(({ label, value }) => (
             <button
-              key={size}
-              className={currentStyles.size === size ? "active" : ""}
+              key={label}
+              className={currentStyles.size === value ? "active" : ""}
               onMouseDown={(e) => {
                 e.preventDefault();
-                applyMark("size", size);
+                applyMark("size", value);
               }}
             >
-              {size}
+              {label}
             </button>
           ))}
         </div>

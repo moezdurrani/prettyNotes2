@@ -138,13 +138,22 @@
 }
 
 .option-buttons button {
-  padding: 5px 10px;
-  border: 1px solid #ccc;
-  background-color: white;
-  border-radius: 4px;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 12px;
+  background-color: #f4f4f4;
   cursor: pointer;
   font-size: 14px;
-  font-family: inherit;
+  font-weight: 500;
+  color: #333;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  min-width: 40px;
+}
+
+.option-buttons button.active {
+  background-color: #d1d1d1;
+  color: #1e1e9c;
+  font-weight: bold;
 }
 
 .color-swatches {
@@ -153,15 +162,22 @@
 }
 
 .color-swatches .swatch {
-  width: 20px;
-  height: 20px;
+  width: 22px;
+  height: 22px;
   border: 2px solid transparent;
-  border-radius: 50%;
+  border-radius: 4px;
   cursor: pointer;
+  transition: outline 0.1s ease;
+}
+
+.color-swatches .swatch:hover {
+  outline: 0.7px solid rgb(74, 74, 74);
+  outline-offset: 2px;
 }
 
 .color-swatches .swatch.active {
-  border: 2px solid #333;
+  outline: 1px solid #333;
+  outline-offset: 2px;
 }
 
 .toolbar button.active {
