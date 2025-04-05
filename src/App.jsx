@@ -70,13 +70,24 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
   const toggleLightMode = () => {
     const app = document.querySelector(".App");
     const container = document.querySelector(".container");
+    const editor = document.querySelector(".editor");
 
     const newMode = !isLightMode;
     setIsLightMode(newMode);
 
-    const color = newMode ? "white" : "rgb(242, 244, 247)";
-    app.style.backgroundColor = color;
-    container.style.backgroundColor = color;
+    const bgColor = newMode ? "white" : "rgb(242, 244, 247)";
+    app.style.backgroundColor = bgColor;
+    container.style.backgroundColor = bgColor;
+
+    if (editor) {
+      if (newMode) {
+        editor.style.border = "none";
+        editor.style.boxShadow = "none";
+      } else {
+        editor.style.border = "1px solid #ccc";
+        editor.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.1)";
+      }
+    }
   };
 
   return (
