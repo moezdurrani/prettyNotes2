@@ -265,13 +265,7 @@ const App = () => {
     {
       type: "paragraph",
       align: "left",
-      children: [
-        {
-          text: "Start typing your notes here...",
-          font: "Indie Flower",
-          size: 20,
-        },
-      ],
+      children: [{ text: "" }],
     },
   ];
 

@@ -290,3 +290,15 @@
   color: rgb(97, 67, 209);
   font-weight: bold;
 }
+
+.editor [data-slate-placeholder="true"] {
+  font-family: "Indie Flower", cursive;
+  font-size: 20px;
+  line-height: 1.5;
+  color: rgb(97, 67, 209);
+  opacity: 1;
+  position: absolute;
+  margin-top: 58px; /* match your .editor padding */
+  left: 40px;
+  pointer-events: none;
+}
