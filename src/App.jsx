@@ -3,6 +3,8 @@ import { useState, useMemo, useCallback } from "react";
 import { createEditor, Editor, Transforms } from "slate";
 import { Slate, Editable, withReact, ReactEditor } from "slate-react";
 import { withHistory } from "slate-history";
+import { Infinity } from "lucide-react";
+import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
 
 // Custom editor utilities
 const CustomEditor = {
@@ -35,7 +37,13 @@ const CustomEditor = {
 // Toolbar component
 const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
   const colors = ["#000000", "#FF0000", "#00FF00", "#0000FF", "#800080"];
-  const fonts = ["Arial", "Times New Roman", "Courier New", "Patrick Hand"];
+  const fonts = [
+    "Arial",
+    "Times New Roman",
+    "Courier New",
+    "Patrick Hand",
+    "Indie Flower",
+  ];
   const sizeOptions = [
     { label: "S", value: 16 },
     { label: "M", value: 20 },
@@ -101,7 +109,11 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
               key={font}
               style={{
                 fontFamily:
-                  font === "Patrick Hand" ? "'Patrick Hand', cursive" : font,
+                  font === "Patrick Hand"
+                    ? "'Patrick Hand', cursive"
+                    : font === "Indie Flower"
+                    ? "'Indie Flower', cursive"
+                    : font,
               }}
               className={`font-button ${
                 currentStyles.font === font ? "active" : ""
@@ -162,20 +174,29 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
       <div className="toolbar-section">
         <label>Alignment:</label>
         <div className="align-container">
-          {alignments.map((align) => (
-            <button
-              key={align}
-              className={`align-button ${
-                currentStyles.align === align ? "active" : ""
-              }`}
-              onMouseDown={(e) => {
-                e.preventDefault();
-                applyAlignment(align);
-              }}
-            >
-              {align.charAt(0).toUpperCase()}
-            </button>
-          ))}
+          {alignments.map((align) => {
+            const Icon =
+              align === "left"
+                ? AlignLeft
+                : align === "center"
+                ? AlignCenter
+                : AlignRight;
+
+            return (
+              <button
+                key={align}
+                className={`align-button ${
+                  currentStyles.align === align ? "active" : ""
+                }`}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  applyAlignment(align);
+                }}
+              >
+                <Icon size={18} />
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -208,7 +229,7 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
               toggleLightMode();
             }}
           >
-            🌞
+            <Infinity size={18} />
           </button>
         </div>
       </div>
@@ -223,6 +244,8 @@ const Leaf = ({ attributes, children, leaf }) => {
     fontFamily:
       leaf.font === "Patrick Hand"
         ? "'Patrick Hand', cursive"
+        : leaf.font === "Indie Flower"
+        ? "'Indie Flower', cursive"
         : leaf.font || "Arial",
     fontSize: `${leaf.size || 16}px`,
     fontWeight: leaf.bold ? "bold" : "normal",
@@ -251,7 +274,9 @@ const App = () => {
     {
       type: "paragraph",
       align: "left",
-      children: [{ text: "Start typing your notes here..." }],
+      children: [
+        { text: "Start typing your notes here...", font: "Indie Flower" },
+      ],
     },
   ];
 
@@ -272,7 +297,7 @@ const App = () => {
       bold: marks.bold || false,
       italic: marks.italic || false,
       color: marks.color || "#000000",
-      font: marks.font || "Arial",
+      font: marks.font || "Indie Flower",
       size: marks.size || 16,
       align: match ? match[0].align || "left" : "left",
     };
@@ -313,10 +338,13 @@ const App = () => {
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
                   event.preventDefault();
+
+                  const marks = Editor.marks(editor) || {};
+
                   Transforms.insertNodes(editor, {
                     type: "paragraph",
                     align: "left",
-                    children: [{ text: "" }],
+                    children: [{ text: "", ...marks }],
                   });
                 }
               }}
