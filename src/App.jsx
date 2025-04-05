@@ -6,7 +6,6 @@ import { withHistory } from "slate-history";
 import { Infinity } from "lucide-react";
 import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
 
-// Custom editor utilities
 const CustomEditor = {
   isBoldMarkActive(editor) {
     const marks = Editor.marks(editor);
@@ -34,7 +33,6 @@ const CustomEditor = {
   },
 };
 
-// Toolbar component
 const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
   const colors = ["#000000", "#FF0000", "#00FF00", "#0000FF", "#800080"];
   const fonts = [
@@ -100,7 +98,6 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
 
   return (
     <div className="toolbar">
-      {/* Font Family */}
       <div className="toolbar-section">
         <label>Font:</label>
         <div className="font-container">
@@ -129,7 +126,6 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
         </div>
       </div>
 
-      {/* Font Size */}
       <div className="toolbar-section">
         <label>Size:</label>
         <div className="size-container">
@@ -150,7 +146,6 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
         </div>
       </div>
 
-      {/* Font Color */}
       <div className="toolbar-section">
         <label>Color:</label>
         <div className="color-swatches">
@@ -170,7 +165,6 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
         </div>
       </div>
 
-      {/* Alignment */}
       <div className="toolbar-section">
         <label>Alignment:</label>
         <div className="align-container">
@@ -200,7 +194,6 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
         </div>
       </div>
 
-      {/* Style (Bold / Italic / Light Mode) */}
       <div className="toolbar-section">
         <label>Style:</label>
         <div className="style-container">
@@ -237,7 +230,6 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
   );
 };
 
-// Leaf rendering component
 const Leaf = ({ attributes, children, leaf }) => {
   const style = {
     color: leaf.color || "#000000",
@@ -246,8 +238,8 @@ const Leaf = ({ attributes, children, leaf }) => {
         ? "'Patrick Hand', cursive"
         : leaf.font === "Indie Flower"
         ? "'Indie Flower', cursive"
-        : leaf.font || "Arial",
-    fontSize: `${leaf.size || 16}px`,
+        : leaf.font || "Indie Flower",
+    fontSize: `${leaf.size || 20}px`,
     fontWeight: leaf.bold ? "bold" : "normal",
     fontStyle: leaf.italic ? "italic" : "normal",
   };
@@ -258,7 +250,6 @@ const Leaf = ({ attributes, children, leaf }) => {
   );
 };
 
-// Element rendering component
 const Element = ({ attributes, children, element }) => {
   return (
     <p {...attributes} style={{ textAlign: element.align || "left" }}>
@@ -275,7 +266,11 @@ const App = () => {
       type: "paragraph",
       align: "left",
       children: [
-        { text: "Start typing your notes here...", font: "Indie Flower" },
+        {
+          text: "Start typing your notes here...",
+          font: "Indie Flower",
+          size: 20,
+        },
       ],
     },
   ];
@@ -298,7 +293,7 @@ const App = () => {
       italic: marks.italic || false,
       color: marks.color || "#000000",
       font: marks.font || "Indie Flower",
-      size: marks.size || 16,
+      size: marks.size || 20,
       align: match ? match[0].align || "left" : "left",
     };
   }, [editor]);
@@ -338,13 +333,10 @@ const App = () => {
               onKeyDown={(event) => {
                 if (event.key === "Enter") {
                   event.preventDefault();
-
-                  const marks = Editor.marks(editor) || {};
-
                   Transforms.insertNodes(editor, {
                     type: "paragraph",
                     align: "left",
-                    children: [{ text: "", ...marks }],
+                    children: [{ text: "", font: "Indie Flower", size: 20 }],
                   });
                 }
               }}
