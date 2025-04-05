@@ -43,6 +43,7 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
     "Times New Roman",
     "Courier New",
     "Georgia",
+    "Comfortaa",
   ];
   const baseColors = ["#000000", "#c9170e", "#529c4f", "#0000ff", "#6143d1"];
   const sizeOptions = [

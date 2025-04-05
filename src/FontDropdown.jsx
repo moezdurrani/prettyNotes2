@@ -2,20 +2,29 @@
 import React, { useState } from "react";
 import "./FontDropdown.css";
 
-const fonts = [
-  "Gamja Flower",
+const allFonts = [
   "Playwrite DE Grund",
-  "Patrick Hand",
-  "Indie Flower",
+  "Arial",
+  "Comfortaa",
+  "Times New Roman",
+  "Courier New",
+  "Georgia",
 ];
 
-const FontDropdown = ({ applyFont, currentFont }) => {
+const FontDropdown = ({ applyFont, currentFont, fonts = allFonts }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [search, setSearch] = useState("");
 
   const filteredFonts = fonts.filter((font) =>
     font.toLowerCase().includes(search.toLowerCase())
   );
+
+  const getFontStyle = (font) => {
+    if (["Arial", "Georgia", "Times New Roman", "Courier New"].includes(font)) {
+      return font; // system font
+    }
+    return `'${font}', cursive`; // Google/custom fonts
+  };
 
   return (
     <div className="custom-font-dropdown">
@@ -42,7 +51,7 @@ const FontDropdown = ({ applyFont, currentFont }) => {
                 className={`font-option ${
                   currentFont === font ? "selected" : ""
                 }`}
-                style={{ fontFamily: `'${font}', cursive` }}
+                style={{ fontFamily: getFontStyle(font) }}
                 onClick={() => {
                   applyFont(font);
                   setIsOpen(false);
