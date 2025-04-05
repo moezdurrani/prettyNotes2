@@ -36,7 +36,7 @@ const CustomEditor = {
 
 // Toolbar component
 const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
-  const baseColors = ["#000000", "#FF0000", "#00FF00", "#0000FF"]; // Removed the last color (#800080)
+  const baseColors = ["#000000", "#c9170e", "#529c4f", "#0000ff", "#e29134"]; // Removed the last color (#800080)
   const fonts = [
     "Arial",
     "Times New Roman",
