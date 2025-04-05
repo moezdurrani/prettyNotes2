@@ -1,10 +1,12 @@
+// App.jsx
 import "./App.css";
-import { useState, useMemo, useCallback, useRef } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { createEditor, Editor, Transforms } from "slate";
 import { Slate, Editable, withReact, ReactEditor } from "slate-react";
 import { withHistory } from "slate-history";
 import { Infinity } from "lucide-react";
 import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
+import FontDropdown from "./FontDropdown";
 
 // Custom editor utilities
 const CustomEditor = {
@@ -34,16 +36,14 @@ const CustomEditor = {
   },
 };
 
-// Toolbar component
 const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
-  const baseColors = ["#000000", "#c9170e", "#529c4f", "#0000ff", "#6143d1"]; // Removed the last color (#800080)
+  const baseColors = ["#000000", "#c9170e", "#529c4f", "#0000ff", "#6143d1"];
   const fonts = [
     "Gamja Flower",
     "Playwrite DE Grund",
     "Patrick Hand",
     "Indie Flower",
   ];
-
   const sizeOptions = [
     { label: "S", value: 18 },
     { label: "M", value: 20 },
@@ -51,9 +51,7 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
     { label: "XL", value: 28 },
   ];
   const alignments = ["left", "center", "right"];
-
-  // State to track the custom color selected by the color picker
-  const [customColor, setCustomColor] = useState("#fa9405"); // Default to the previous purple color
+  const [customColor, setCustomColor] = useState("#fa9405");
 
   const applyMark = (key, value) => {
     if (editor.selection) {
@@ -82,7 +80,6 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
     const app = document.querySelector(".App");
     const container = document.querySelector(".container");
     const editorEl = document.querySelector(".editor");
-
     const newMode = !isLightMode;
     setIsLightMode(newMode);
 
@@ -91,43 +88,28 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
     container.style.backgroundColor = bgColor;
 
     if (editorEl) {
-      if (newMode) {
-        editorEl.style.border = "none";
-        editorEl.style.boxShadow = "none";
-      } else {
-        editorEl.style.border = "1px solid #ccc";
-        editorEl.style.boxShadow = "0 4px 10px rgba(0, 0, 0, 0.1)";
-      }
+      editorEl.style.border = newMode ? "none" : "1px solid #ccc";
+      editorEl.style.boxShadow = newMode
+        ? "none"
+        : "0 4px 10px rgba(0, 0, 0, 0.1)";
     }
   };
 
   const handleColorPickerChange = (e) => {
     const selectedColor = e.target.value;
-    setCustomColor(selectedColor); // Update the custom color state
-    applyMark("color", selectedColor); // Apply the selected color to the editor
+    setCustomColor(selectedColor);
+    applyMark("color", selectedColor);
   };
 
   return (
     <div className="toolbar">
-      {/* Font Family */}
       <div className="toolbar-section">
         <label>Font:</label>
         <div className="font-container">
           {fonts.map((font) => (
             <button
               key={font}
-              style={{
-                fontFamily:
-                  font === "Patrick Hand"
-                    ? "'Patrick Hand', cursive"
-                    : font === "Indie Flower"
-                    ? "'Indie Flower', cursive"
-                    : font === "Gamja Flower"
-                    ? "'Gamja Flower', cursive"
-                    : font === "Playwrite DE Grund"
-                    ? "'Playwrite DE Grund', cursive"
-                    : font,
-              }}
+              style={{ fontFamily: `'${font}', cursive` }}
               className={`font-button ${
                 currentStyles.font === font ? "active" : ""
               }`}
@@ -140,9 +122,12 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
             </button>
           ))}
         </div>
+        <FontDropdown
+          currentFont={currentStyles.font}
+          applyFont={(font) => applyMark("font", font)}
+        />
       </div>
 
-      {/* Font Size */}
       <div className="toolbar-section">
         <label>Size:</label>
         <div className="size-container">
@@ -163,7 +148,6 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
         </div>
       </div>
 
-      {/* Font Color */}
       <div className="toolbar-section">
         <label>Color:</label>
         <div className="color-swatches">
@@ -180,27 +164,25 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
               }}
             />
           ))}
-          {/* Custom Color Button with Color Picker */}
           <div className="color-picker-wrapper">
             <button
               style={{ backgroundColor: customColor }}
               className={`swatch ${
                 currentStyles.color === customColor ? "active" : ""
               }`}
-              onMouseDown={(e) => e.preventDefault()} // Prevent Slate from losing focus
+              onMouseDown={(e) => e.preventDefault()}
             />
             <input
               type="color"
               value={customColor}
               onChange={handleColorPickerChange}
               className="color-picker-overlay"
-              onMouseDown={(e) => e.preventDefault()} // Prevent Slate from losing focus
+              onMouseDown={(e) => e.preventDefault()}
             />
           </div>
         </div>
       </div>
 
-      {/* Alignment */}
       <div className="toolbar-section">
         <label>Alignment:</label>
         <div className="align-container">
@@ -211,7 +193,6 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
                 : align === "center"
                 ? AlignCenter
                 : AlignRight;
-
             return (
               <button
                 key={align}
@@ -230,7 +211,6 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
         </div>
       </div>
 
-      {/* Style Buttons */}
       <div className="toolbar-section">
         <label>Style:</label>
         <div className="style-container">
@@ -267,21 +247,10 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
   );
 };
 
-// Leaf Component
 const Leaf = ({ attributes, children, leaf }) => {
   const style = {
     color: leaf.color || "#000000",
-    fontFamily:
-      leaf.font === "Patrick Hand"
-        ? "'Patrick Hand', cursive"
-        : leaf.font === "Indie Flower"
-        ? "'Indie Flower', cursive"
-        : leaf.font === "Gamja Flower"
-        ? "'Gamja Flower', cursive"
-        : leaf.font === "Playwrite DE Grund"
-        ? "'Playwrite DE Grund', cursive"
-        : "Indie Flower",
-
+    fontFamily: `'${leaf.font || "Indie Flower"}', cursive`,
     fontSize: `${leaf.size || 20}px`,
     fontWeight: leaf.bold ? "bold" : "normal",
     fontStyle: leaf.italic ? "italic" : "normal",
@@ -293,7 +262,6 @@ const Leaf = ({ attributes, children, leaf }) => {
   );
 };
 
-// Element Component
 const Element = ({ attributes, children, element }) => {
   return (
     <p {...attributes} style={{ textAlign: element.align || "left" }}>
@@ -304,7 +272,6 @@ const Element = ({ attributes, children, element }) => {
 
 const App = () => {
   const editor = useMemo(() => withHistory(withReact(createEditor())), []);
-
   const initialValue = [
     {
       type: "paragraph",
@@ -325,7 +292,6 @@ const App = () => {
       match: (n) => n.type === "paragraph",
       mode: "lowest",
     });
-
     return {
       bold: marks.bold || false,
       italic: marks.italic || false,

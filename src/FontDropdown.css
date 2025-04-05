@@ -1,0 +1,59 @@
+.custom-font-dropdown {
+  position: relative;
+  width: 160px;
+  font-family: "Quicksand", sans-serif;
+}
+
+.font-dropdown-trigger {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 2px solid rgb(162, 179, 255);
+  background: linear-gradient(to bottom, #f9f9f9, #eaeaea);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.font-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  margin-top: 6px;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  z-index: 100;
+}
+
+.font-dropdown-search {
+  width: 100%;
+  padding: 6px 8px;
+  border: none;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.font-dropdown-options {
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.font-option {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.2s ease;
+}
+
+.font-option:hover {
+  background-color: #f0f0f0;
+}
+
+.font-option.selected {
+  background-color: #e2dfff;
+  font-weight: bold;
+}
