@@ -8,7 +8,6 @@ import { Infinity } from "lucide-react";
 import { AlignLeft, AlignCenter, AlignRight } from "lucide-react";
 import FontDropdown from "./FontDropdown";
 
-// Custom editor utilities
 const CustomEditor = {
   isBoldMarkActive(editor) {
     const marks = Editor.marks(editor);
@@ -37,13 +36,15 @@ const CustomEditor = {
 };
 
 const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
-  const baseColors = ["#000000", "#c9170e", "#529c4f", "#0000ff", "#6143d1"];
-  const fonts = [
-    "Gamja Flower",
+  const toolbarFonts = ["Gamja Flower", "Patrick Hand", "Indie Flower"];
+  const dropdownFonts = [
     "Playwrite DE Grund",
-    "Patrick Hand",
-    "Indie Flower",
+    "Arial",
+    "Times New Roman",
+    "Courier New",
+    "Georgia",
   ];
+  const baseColors = ["#000000", "#c9170e", "#529c4f", "#0000ff", "#6143d1"];
   const sizeOptions = [
     { label: "S", value: 18 },
     { label: "M", value: 20 },
@@ -65,7 +66,6 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
       match: (n) => n.type === "paragraph",
       mode: "lowest",
     });
-
     if (match) {
       Transforms.setNodes(
         editor,
@@ -82,11 +82,9 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
     const editorEl = document.querySelector(".editor");
     const newMode = !isLightMode;
     setIsLightMode(newMode);
-
     const bgColor = newMode ? "white" : "rgb(242, 244, 247)";
     app.style.backgroundColor = bgColor;
     container.style.backgroundColor = bgColor;
-
     if (editorEl) {
       editorEl.style.border = newMode ? "none" : "1px solid #ccc";
       editorEl.style.boxShadow = newMode
@@ -106,7 +104,7 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
       <div className="toolbar-section">
         <label>Font:</label>
         <div className="font-container">
-          {fonts.map((font) => (
+          {toolbarFonts.map((font) => (
             <button
               key={font}
               style={{ fontFamily: `'${font}', cursive` }}
@@ -125,6 +123,7 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
         <FontDropdown
           currentFont={currentStyles.font}
           applyFont={(font) => applyMark("font", font)}
+          fonts={dropdownFonts}
         />
       </div>
 
