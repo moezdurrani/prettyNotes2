@@ -38,12 +38,12 @@ const CustomEditor = {
 const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
   const baseColors = ["#000000", "#c9170e", "#529c4f", "#0000ff", "#6143d1"]; // Removed the last color (#800080)
   const fonts = [
-    "Arial",
-    "Times New Roman",
-    "Courier New",
+    "Gamja Flower",
+    "Playwrite DE Grund",
     "Patrick Hand",
     "Indie Flower",
   ];
+
   const sizeOptions = [
     { label: "S", value: 18 },
     { label: "M", value: 20 },
@@ -122,6 +122,10 @@ const Toolbar = ({ editor, currentStyles, isLightMode, setIsLightMode }) => {
                     ? "'Patrick Hand', cursive"
                     : font === "Indie Flower"
                     ? "'Indie Flower', cursive"
+                    : font === "Gamja Flower"
+                    ? "'Gamja Flower', cursive"
+                    : font === "Playwrite DE Grund"
+                    ? "'Playwrite DE Grund', cursive"
                     : font,
               }}
               className={`font-button ${
@@ -272,7 +276,12 @@ const Leaf = ({ attributes, children, leaf }) => {
         ? "'Patrick Hand', cursive"
         : leaf.font === "Indie Flower"
         ? "'Indie Flower', cursive"
-        : leaf.font || "Indie Flower",
+        : leaf.font === "Gamja Flower"
+        ? "'Gamja Flower', cursive"
+        : leaf.font === "Playwrite DE Grund"
+        ? "'Playwrite DE Grund', cursive"
+        : "Indie Flower",
+
     fontSize: `${leaf.size || 20}px`,
     fontWeight: leaf.bold ? "bold" : "normal",
     fontStyle: leaf.italic ? "italic" : "normal",
